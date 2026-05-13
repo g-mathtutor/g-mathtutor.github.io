@@ -1,4 +1,4 @@
-﻿const WORKER_URL = 'https://gameauth.harperdoteso.workers.dev';
+﻿const WORKER_URL = 'https://mathtutor--ec56c4144f1511f1b9f0ee650bb23af1.web.val.run/';
 const GAMES_JSON = 'games.json';
 
 // ── safe element grabs ─────────────────────────────
