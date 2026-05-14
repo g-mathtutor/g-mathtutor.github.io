@@ -1,14 +1,13 @@
-// ── HARDCODED DATA ────────────────────────────────
 const STUDENT_DATA = {
-    "Harper A.": "Ymx1ZWZyb2c3",   // bluefrog7
-    "Lucas S.": "c3VubnljYXQy",    // sunnycat2
-    "Braxton M.": "bWludHBpenphOQ==", // mintpizza9
-    "Neil V.": "cmVkYXBwbGU1",     // redapple5
-    "Jaxon S.": "dGlueXRpZ2VyMw==", // tinytiger3
-    "Tiergan I.": "aGFwcHl6ZWJyYTE=", // happyzebra1
-    "Girthro K.": "Y2xvdWRtZWxvbjg=", // cloudmelon8
-    "Landon C.": "c2FkdGlnZXI4",    // sadtiger8
-    "Henry S.": "YW5ncnllZGdhcjM="  // angryedgar3
+    "Harper A.": "Ymx1ZWZyb2c3",
+    "Lucas S.": "c3VubnljYXQy",
+    "Braxton M.": "bWludHBpenphOQ==",
+    "Neil V.": "cmVkYXBwbGU1",
+    "Jaxon S.": "dGlueXRpZ2VyMw==",
+    "Tiergan I.": "aGFwcHl6ZWJyYTE=",
+    "Girthro K.": "Y2xvdWRtZWxvbjg=",
+    "Landon C.": "c2FkdGlnZXI4",
+    "Henry S.": "YW5ncnllZGdhcjM="
 };
 
 const GAMES_JSON = 'games.json';
