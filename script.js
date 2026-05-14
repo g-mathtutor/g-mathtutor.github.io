@@ -1,4 +1,16 @@
-﻿const WORKER_URL = 'https://mathtutor--ec56c4144f1511f1b9f0ee650bb23af1.web.val.run/';
+// ── HARDCODED DATA ────────────────────────────────
+const STUDENT_DATA = {
+    "Harper A.": "Ymx1ZWZyb2c3",   // bluefrog7
+    "Lucas S.": "c3VubnljYXQy",    // sunnycat2
+    "Braxton M.": "bWludHBpenphOQ==", // mintpizza9
+    "Neil V.": "cmVkYXBwbGU1",     // redapple5
+    "Jaxon S.": "dGlueXRpZ2VyMw==", // tinytiger3
+    "Tiergan I.": "aGFwcHl6ZWJyYTE=", // happyzebra1
+    "Girthro K.": "Y2xvdWRtZWxvbjg=", // cloudmelon8
+    "Landon C.": "c2FkdGlnZXI4",    // sadtiger8
+    "Henry S.": "YW5ncnllZGdhcjM="  // angryedgar3
+};
+
 const GAMES_JSON = 'games.json';
 
 // ── safe element grabs ─────────────────────────────
@@ -24,50 +36,39 @@ const themeSelector = document.getElementById('theme-selector');
 const overlayClose = document.getElementById('overlay-close');
 const overlayFull = document.getElementById('overlay-fullscreen');
 
-let studentMap = {};
+let studentMap = STUDENT_DATA;
 let selectedName = '';
 let currentGameUrl = '';
 
 // ── auth init ──────────────────────────────────────
-async function init() {
+function init() {
     if (localStorage.getItem('isLoggedIn') === 'true') {
         showGameContent(localStorage.getItem('studentName'));
         return;
     }
 
-    try {
-        const res = await fetch(WORKER_URL);
-        const data = await res.json();
+    // Populate name list from hardcoded data
+    Object.keys(studentMap).forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'option-item';
+        div.textContent = name;
 
-        data.forEach(([name, encryptedPass]) => {
-            studentMap[name] = encryptedPass;
+        div.onclick = () => {
+            selectedName = name;
 
-            const div = document.createElement('div');
-            div.className = 'option-item';
-            div.textContent = name;
+            if (selectedDisplay)
+                selectedDisplay.textContent = name;
 
-            div.onclick = () => {
-                selectedName = name;
+            const greeting = document.getElementById('personal-greeting');
+            if (greeting) greeting.textContent = `Hello, ${name}!`;
 
-                if (selectedDisplay)
-                    selectedDisplay.textContent = name;
+            optionsContainer?.classList.remove('open');
+            switchStep(step1, step2);
+        };
 
-                const greeting = document.getElementById('personal-greeting');
-                if (greeting) greeting.textContent = `Hello, ${name}!`;
-
-                optionsContainer?.classList.remove('open');
-
-                switchStep(step1, step2);
-            };
-
-            namesList?.appendChild(div);
-        });
-
-    } catch (e) {
-        if (errorMsg) errorMsg.textContent = 'worker offline or invalid response';
-    }
+        namesList?.appendChild(div);
+    });
 }
-
 
 // ── login ─────────────────────────────────────────
 loginBtn?.addEventListener('click', () => {
@@ -79,6 +80,7 @@ loginBtn?.addEventListener('click', () => {
     const userInput = passInput?.value || '';
     const correctEncrypted = studentMap[selectedName];
 
+    // Comparing Base64 of input to hardcoded Base64
     if (btoa(userInput) === correctEncrypted) {
         authCard?.classList.add('success-exit');
 
@@ -185,9 +187,6 @@ overlayFull?.addEventListener('click', () => {
 });
 
 // ── theme system ─────────────────────────────────
-
-
-// ── theme system ─────────────────────────────────
 const themes = [
     { id: 'dark', label: 'dark', swatch: '#6366f1' },
     { id: 'neon', label: 'neon', swatch: '#06d6a0' },
@@ -243,17 +242,17 @@ themeTrigger?.addEventListener('click', (e) => {
 });
 
 // ── dropdown ──────────────────────────────────────
-document.getElementById('select-trigger').addEventListener('click', (e) => {
-    e.stopPropagation();
-    document.getElementById('options-container').classList.toggle('open');
-});
-
-window.addEventListener('click', () => {
-    document.getElementById('options-container').classList.remove('open');
-});
+const mainSelectTrigger = document.getElementById('select-trigger');
+if (mainSelectTrigger) {
+    mainSelectTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        optionsContainer?.classList.toggle('open');
+    });
+}
 
 window.addEventListener('click', () => {
     optionsContainer?.classList.remove('open');
+    themeOptions?.classList.remove('open');
 });
 
 // ── logout ────────────────────────────────────────
