@@ -1,13 +1,13 @@
 const STUDENT_DATA = {
-    "Harper A.": "Ymx1ZWZyb2c3",
-    "Lucas S.": "c3VubnljYXQy",
-    "Braxton M.": "bWludHBpenphOQ==",
-    "Neil V.": "cmVkYXBwbGU1",
-    "Jaxon S.": "dGlueXRpZ2VyMw==",
-    "Tiergan I.": "aGFwcHl6ZWJyYTE=",
-    "Girthro K.": "Y2xvdWRtZWxvbjg=",
-    "Landon C.": "c2FkdGlnZXI4",
-    "Henry S.": "YW5ncnllZGdhcjM="
+    "Harper A.": "Ymx1M2NhdDE5",
+    "Lucas S.": "c3VuN2RheTQy",
+    "Braxton M.": "cGVuQ2lsODg=",
+    "Neil V.": "dDFnZXJIb21lNg==",
+    "Jaxon S.": "bWFwbDN3b29kOQ==",
+    "Tiergan I.": "c29jYzNyQmFsbDQ=",
+    "Landon C.": "d2ludDNyRm94Nw==",
+    "Tyler G.": "aGFwcFljb2RlMzE=",
+    "Robbie S.": "cml2M3JMYW5lOA==",
 };
 
 const GAMES_JSON = 'games.json';
