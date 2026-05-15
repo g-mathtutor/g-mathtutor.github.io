@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
-    <!-- Embedded CSS for the Popup -->
     <style>
+        /* --- ANNOUNCEMENT POPUP STYLES --- */
         #announcement-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -28,53 +28,79 @@
         .announcement-card {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
             padding: 2.5rem;
-            border-radius: 24px;
-            max-width: 450px;
+            border-radius: 28px;
+            max-width: 480px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            animation: popupSlide 0.4s ease-out;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: popupScale 0.3s ease-out;
         }
 
-        @keyframes popupSlide {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes popupScale {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .announcement-card h2 {
-            color: #fff;
-            margin-bottom: 1rem;
-            font-weight: 800;
-        }
-
-        .announcement-card p {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
-        }
-
-        .announcement-card span {
-            color: #4facfe; /* Matching a typical math-tutor blue/accent */
-            font-weight: 800;
-        }
-
+        .announcement-card h2 { color: #fff; margin-bottom: 1rem; font-weight: 800; font-size: 1.8rem; }
+        .announcement-card h2 span { color: #4facfe; }
+        .announcement-card p { color: rgba(255, 255, 255, 0.9); line-height: 1.6; margin-bottom: 2rem; font-size: 1.05rem; }
         .announcement-btn {
-            background: white;
-            color: black;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
+            background: #fff; color: #000; border: none; padding: 14px 40px;
+            border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .announcement-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+
+        /* --- HARPER ADMIN TOOL STYLES --- */
+        #harper-admin-tool {
+            display: none; /* Hidden unless logged in as Harper A. */
+            margin-right: 15px;
         }
 
-        .announcement-btn:hover {
-            transform: scale(1.05);
-            background: #f0f0f0;
+        .admin-trigger-btn {
+            background: rgba(79, 172, 254, 0.2);
+            border: 1px solid #4facfe;
+            color: #4facfe;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .admin-trigger-btn:hover { background: #4facfe; color: white; }
+
+        #admin-search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 10000;
+            display: none; align-items: center; justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .admin-search-box {
+            background: #111; padding: 2.5rem; border-radius: 24px;
+            border: 1px solid #333; width: 380px; text-align: center;
+            box-shadow: 0 0 30px rgba(79, 172, 254, 0.1);
+        }
+
+        .admin-search-box input {
+            width: 100%; padding: 14px; margin-top: 20px;
+            border-radius: 12px; border: 1px solid #333; outline: none;
+            background: #222; color: white; text-align: center; font-size: 1rem;
+        }
+
+        .admin-search-box input:focus { border-color: #4facfe; }
+
+        #admin-result {
+            margin-top: 25px; font-size: 1.1rem; font-weight: 600;
+            color: #4facfe; min-height: 1.5rem;
+        }
+
+        #admin-result span {
+            background: #4facfe; color: black; padding: 2px 8px;
+            border-radius: 6px; margin-left: 8px; font-family: monospace;
         }
     </style>
 </head>
@@ -82,7 +108,7 @@
 <body>
     <div class="bg-gradient"></div>
 
-    <!-- MANDATORY POPUP -->
+    <!-- MANDATORY ANNOUNCEMENT -->
     <div id="announcement-overlay">
         <div class="announcement-card">
             <h2>🎓 Math<span>Tutor</span> Update</h2>
@@ -97,12 +123,28 @@
         </div>
     </div>
 
-    <!-- LOGIN -->
+    <!-- HARPER'S SECRET LOOKUP OVERLAY -->
+    <div id="admin-search-overlay">
+        <div class="admin-search-box">
+            <h3 style="color: white; margin: 0; font-size: 1.4rem;">User Lookup</h3>
+            <p style="color: #666; font-size: 0.85rem; margin-top: 8px;">Type the exact name to reveal password.</p>
+            
+            <input type="text" id="admin-lookup-input" placeholder="Enter Full Name..." autocomplete="off">
+            
+            <div id="admin-result"></div>
+            
+            <button class="announcement-btn" style="margin-top: 25px; width: 100%; background: #222; color: white;" onclick="toggleAdminSearch()">Close Tool</button>
+        </div>
+    </div>
+
+    <!-- LOGIN PAGE -->
     <main class="auth-wrapper" id="auth-wrapper">
         <div class="glass-card" id="auth-card">
+
             <div id="step-1" class="auth-step active">
                 <h1 class="title">🎓 Math<span>Tutor</span></h1>
                 <p class="subtitle">Log In for Instant Help!</p>
+
                 <div class="custom-select" id="custom-select">
                     <div class="select-trigger" id="select-trigger">
                         <span id="selected-name-display">choose your name...</span>
@@ -124,6 +166,7 @@
                 <button id="login-btn">play</button>
                 <p id="error-msg" class="error-text"></p>
             </div>
+
         </div>
     </main>
 
@@ -131,7 +174,9 @@
     <div id="games-page" class="hidden">
         <header class="games-header">
             <div class="games-header-inner">
+
                 <h1 class="games-title">🎓 Math<span>Tutor</span></h1>
+
                 <div class="custom-select theme-dropdown" id="theme-dropdown">
                     <div class="select-trigger" id="theme-trigger">
                         <span id="theme-display">dark</span>
@@ -141,10 +186,17 @@
                         <div id="theme-list"></div>
                     </div>
                 </div>
+
                 <div class="games-header-right">
+                    <!-- ADMIN TOOL BUTTON (Visible only to Harper) -->
+                    <div id="harper-admin-tool">
+                        <button class="admin-trigger-btn" onclick="toggleAdminSearch()">🔑 Password Lookup</button>
+                    </div>
+
                     <span id="header-username"></span>
                     <button class="logout-btn" onclick="logout()">logout</button>
                 </div>
+
             </div>
         </header>
 
@@ -162,13 +214,63 @@
         <iframe id="game-iframe" allowfullscreen></iframe>
     </div>
 
+    <!-- MAIN SCRIPT -->
     <script src="script.js"></script>
 
-    <!-- JavaScript to handle closing the popup -->
+    <!-- CUSTOM LOGIC SCRIPT -->
     <script>
+        // 1. Close the Announcement Popup
         function closePopup() {
             document.getElementById('announcement-overlay').style.display = 'none';
         }
+
+        // 2. Open/Close the Admin Lookup Tool
+        function toggleAdminSearch() {
+            const overlay = document.getElementById('admin-search-overlay');
+            const isVisible = overlay.style.display === 'flex';
+            overlay.style.display = isVisible ? 'none' : 'flex';
+            
+            // Reset search when opening/closing
+            document.getElementById('admin-lookup-input').value = '';
+            document.getElementById('admin-result').innerText = '';
+            
+            if (!isVisible) {
+                document.getElementById('admin-lookup-input').focus();
+            }
+        }
+
+        // 3. Admin Detection (Checks if Harper A. is the current user)
+        setInterval(() => {
+            const currentLoggedName = document.getElementById('header-username').innerText.trim();
+            const adminContainer = document.getElementById('harper-admin-tool');
+            
+            if (currentLoggedName === "Harper A.") {
+                adminContainer.style.display = "block";
+            } else {
+                adminContainer.style.display = "none";
+            }
+        }, 1000);
+
+        // 4. Exact Match Password Lookup Logic
+        document.getElementById('admin-lookup-input').addEventListener('input', function(e) {
+            const inputVal = e.target.value.trim();
+            const resultDisplay = document.getElementById('admin-result');
+            
+            // STUDENT_DATA comes from your script.js
+            if (typeof STUDENT_DATA !== 'undefined' && STUDENT_DATA[inputVal]) {
+                try {
+                    // Decodes the Base64 password from your object
+                    const pass = atob(STUDENT_DATA[inputVal]);
+                    resultDisplay.innerHTML = `Found: <span>${pass}</span>`;
+                } catch (err) {
+                    // Fallback if not Base64 encoded
+                    resultDisplay.innerHTML = `Found: <span>${STUDENT_DATA[inputVal]}</span>`;
+                }
+            } else {
+                // If it's NOT an exact match, show nothing (protects privacy while typing)
+                resultDisplay.innerText = "";
+            }
+        });
     </script>
 </body>
 </html>
