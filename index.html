@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,48 +7,123 @@
 
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Embedded CSS for the Popup -->
+    <style>
+        #announcement-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .announcement-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(16px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            animation: popupSlide 0.4s ease-out;
+        }
+
+        @keyframes popupSlide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .announcement-card h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .announcement-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .announcement-card span {
+            color: #4facfe; /* Matching a typical math-tutor blue/accent */
+            font-weight: 800;
+        }
+
+        .announcement-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .announcement-btn:hover {
+            transform: scale(1.05);
+            background: #f0f0f0;
+        }
+    </style>
 </head>
 
 <body>
     <div class="bg-gradient"></div>
 
+    <!-- MANDATORY POPUP -->
+    <div id="announcement-overlay">
+        <div class="announcement-card">
+            <h2>🎓 Math<span>Tutor</span> Update</h2>
+            <p>
+                Hello! The website will be <strong>going free</strong> starting May 20th (3 days before school ends)! 
+                <br><br>
+                Just a reminder to <strong>not share accounts</strong>. I've already removed 2 peoples accounts and I've reset all passwords. 
+                <br><br>
+                If you need your passwords, <strong>DO NOT EMAIL ME!</strong> Find me somewhere in school.
+            </p>
+            <button class="announcement-btn" onclick="closePopup()">I understand</button>
+        </div>
+    </div>
+
     <!-- LOGIN -->
     <main class="auth-wrapper" id="auth-wrapper">
         <div class="glass-card" id="auth-card">
-
             <div id="step-1" class="auth-step active">
                 <h1 class="title">🎓 Math<span>Tutor</span></h1>
                 <p class="subtitle">Log In for Instant Help!</p>
-
                 <div class="custom-select" id="custom-select">
-
                     <div class="select-trigger" id="select-trigger">
                         <span id="selected-name-display">choose your name...</span>
                         <span class="arrow">▾</span>
                     </div>
-
                     <div class="select-options" id="options-container">
                         <div class="search-box">
                             <input id="name-search" placeholder="search..." />
                         </div>
-
                         <div id="names-list"></div>
                     </div>
-
                 </div>
             </div>
 
             <div id="step-2" class="auth-step">
                 <h1 id="personal-greeting" class="title">hello!</h1>
                 <p class="subtitle">verify yourself</p>
-
                 <input type="password" id="password-input" placeholder="enter password">
-
                 <button id="login-btn">play</button>
-
                 <p id="error-msg" class="error-text"></p>
             </div>
-
         </div>
     </main>
 
@@ -56,9 +131,7 @@
     <div id="games-page" class="hidden">
         <header class="games-header">
             <div class="games-header-inner">
-
                 <h1 class="games-title">🎓 Math<span>Tutor</span></h1>
-
                 <div class="custom-select theme-dropdown" id="theme-dropdown">
                     <div class="select-trigger" id="theme-trigger">
                         <span id="theme-display">dark</span>
@@ -68,12 +141,10 @@
                         <div id="theme-list"></div>
                     </div>
                 </div>
-
                 <div class="games-header-right">
                     <span id="header-username"></span>
                     <button class="logout-btn" onclick="logout()">logout</button>
                 </div>
-
             </div>
         </header>
 
@@ -86,14 +157,18 @@
     <div id="game-overlay" class="hidden">
         <div class="overlay-header">
             <button class="overlay-btn" id="overlay-close">← back</button>
-
             <span id="overlay-game-title"></span>
-
         </div>
-
         <iframe id="game-iframe" allowfullscreen></iframe>
     </div>
 
     <script src="script.js"></script>
+
+    <!-- JavaScript to handle closing the popup -->
+    <script>
+        function closePopup() {
+            document.getElementById('announcement-overlay').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
