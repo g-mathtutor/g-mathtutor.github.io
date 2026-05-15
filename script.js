@@ -8,6 +8,7 @@ const STUDENT_DATA = {
     "Landon C.": "d2ludDNyRm94Nw==",
     "Tyler G.": "aGFwcFljb2RlMzE=",
     "Robbie S.": "cml2M3JMYW5lOA==",
+    "Avi U.": "bm90M2Jvb2syNw=="
 };
 
 const GAMES_JSON = 'games.json';
